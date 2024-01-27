@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academicmatch</title>
+    <style>
+        #div_title {
+            font-weight: bold;
+            font-size: 1.2em; /* Adjust the font size as needed */
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Academicmatch</h1>
+    <div> 
+        <form action="/searching/" method="post">
+            <p><input type="text" name="title" placeholder="스터디 모집 제목을 입력하세요 !" style="width : 500px; height: 50px; font-size: 25px;"></p>
+            <p><textarea name="body" placeholder="스터디 모집글을 작성하세요!" style="width : 500px; height: 150px; font-size: 25px;"></textarea></p>
+            <p><button class="send_btn" onclick="show_result()" type="button" style="width:250px;height:50px;font-size:25px;">제출!</button></p>
+        </form>
+        <strong><div id="div_title" onclick="redirectUrl()"></div></strong>
+        <div id="div_content"></div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        function show_result() {
+            var title_val = document.querySelector('input[name="title"]');
+            var content_val = document.querySelector('textarea[name="body"]');
+
+            $.ajax({
+                url: 'show_result',
+                type: 'GET',
+                data: {
+                    'title_val': title_val.value,
+                    'content_val': content_val.value
+                },
+                datatype: 'json',
+                success: function (data) {
+                    var element1 = document.getElementById('div_title');
+                    element1.innerHTML = '<a href="' + data['url'] + '">' + data['title'] + '</a>';
+
+                    var element2 = document.getElementById('div_content');
+                    element2.innerHTML = data['content'];
+                }
+            });
+        }
+
+        function redirectUrl() {
+            var titleText = document.getElementById('div_title').innerText;
+            var contentText = document.getElementById('div_content').innerText;
+
+            // Assuming the server provides the URL in the 'url' property of the data
+            var url = '';  // Replace with the actual property name in your server response
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>

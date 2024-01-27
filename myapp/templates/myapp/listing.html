@@ -1,0 +1,49 @@
+<!-- listingg.html -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스터디 목록</title>
+
+    <style>
+        /* 추가된 CSS 스타일 */
+        ul#studyList {
+            list-style: none;  /* 리스트 항목의 기본 스타일(점)을 없앰 */
+            padding: 0;  /* 리스트의 padding을 0으로 설정 */
+        }
+    </style>
+</head>
+<body>
+    <h1>인프런 스터디 목록</h1>
+
+    <ul id="studyList">
+        {% for title, url, content in zipped_data %}
+            <li>
+                <strong><a href="{{ url }}" target="_blank" rel="noopener noreferrer">{{ title }}</a></strong>
+                <br>
+                
+                <br>
+                {{ content|slice:":200" }} ...
+            </li>
+            <hr style="margin-top: 10px; margin-bottom: 10px;">
+        {% endfor %}
+    </ul>
+
+    <!-- Django에서 전달한 데이터를 HTML의 data 속성을 통해 삽입 -->
+    <div id="studyListData"
+         data-a-titlelist="{{ a_titlelist|safe }}"
+         data-a-urllist="{{ a_urllist|safe }}"
+         data-contentlist="{{ contentlist|safe }}"></div>
+
+    <!-- study_list.js를 불러올 때 전역 변수를 사용하지 않습니다. -->
+    <script src="{% static 'js/study_list.js' %}"></script>
+</body>
+</html>
+
+<a href = "{% url 'searching' %}"><button style = "width:250px;height:50px;font-size:25px;">맞춤 스터디 찾기</button> 
+</body>
+</html>
